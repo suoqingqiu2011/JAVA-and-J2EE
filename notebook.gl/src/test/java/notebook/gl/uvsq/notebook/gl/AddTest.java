@@ -1,0 +1,33 @@
+package notebook.gl.uvsq.notebook.gl;
+
+import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+public class AddTest {
+
+
+	private Command add;
+
+
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		
+	}
+
+	@Before
+	public void setUp() throws Exception {
+		Receiver fileReceiver = new FileReceiver();
+		Receiver directoryReceiver = new DirectoryReceiver();
+		Receiver windowReceiver = new WindowReceiver();
+		add = new Add(fileReceiver, directoryReceiver, windowReceiver);
+	}
+
+	@Test
+	public void testExecuteString() {
+		add.execute("1.txt");
+	}
+
+}

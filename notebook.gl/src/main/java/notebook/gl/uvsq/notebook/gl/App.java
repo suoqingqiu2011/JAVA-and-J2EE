@@ -4,6 +4,8 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import org.fusesource.jansi.Ansi;
@@ -14,6 +16,24 @@ import org.fusesource.jansi.Ansi.Color;
 public class App 
 {
 	
+//	private Command add;
+//	private Command delete;
+//	private Command search;
+//	private Command list;
+//	private Command view;
+//	private Command edit;
+	private String file;
+	private Receiver fileReceiver;
+	private Receiver directoryReceiver;
+	private Receiver windowReceiver;
+	
+	public App(String file) {
+		this.file = file;
+		this.fileReceiver = new FileReceiver();
+		this.windowReceiver = new WindowReceiver();
+		this.directoryReceiver = new DirectoryReceiver();	
+	}
+	
 	public void printJansiMenuDemo() {
 		Reader in = new InputStreamReader(this.getClass().getResourceAsStream("menu.txt"));
 		try {
@@ -22,7 +42,8 @@ public class App
 			try {
 				while ((l = in.read(buf)) >= 0) {
 					for (int i = 0; i < l; i++) {
-						AnsiConsole.out.print(Ansi.ansi().fg(Color.YELLOW).a(buf[i]).reset());
+//						AnsiConsole.out.print(Ansi.ansi().fg(Color.YELLOW).a(buf[i]).reset());
+						System.out.println(buf[i]);
 					}
 				}
 			} catch (IOException e) {
@@ -41,7 +62,8 @@ public class App
 			int l = 0;
 			while ((l = in.read(buf)) >= 0) {
 				for (int i = 0; i < l; i++) {
-					AnsiConsole.out.print(Ansi.ansi().fg(Color.CYAN).a(buf[i]).reset());
+//					AnsiConsole.out.print(Ansi.ansi().fg(Color.CYAN).a(buf[i]).reset());
+					System.out.println(buf[i]);
 				}
 			}
 		} finally {
@@ -60,25 +82,39 @@ public class App
 	
     public static void main( String[] args ) throws IOException
     {
-    	App app = new App();
+    	
+    	App app = new App(args[1]);
     	app.printJansiLogoDemo();
     	app.printJansiMenuDemo();
-    	while(true) {
-    		Scanner sc = new Scanner(System.in);
-    		String line = sc.nextLine();
-    		app.handleInput(line.charAt(0));
-    	}
+    	app.handleInput(args[0]);
+    	
 //    	 System.out.println( Ansi.ansi().eraseScreen().fg(Ansi.Color.RED).a("Hello").fg(Ansi.Color.GREEN).a(" World").reset() );
 //        System.out.println( "Hello World!" );
     }
 
-	private void handleInput(char charAt) {
-		switch(charAt) {
-		case 'q':
-			System.exit(1);
-		case 'h':
-			this.printJansiMenuDemo();
+	private void handleInput(String comm) {
+		Command c = null;
+		switch(comm) {
+		case "add":
+			c = new Add(fileReceiver,directoryReceiver,windowReceiver);
+			break;
+		case "delete":
+			c = new Delete(fileReceiver);
+			break;
+		case "search":
+			List fileReceivers = new ArrayList<FileReceiver>();
+			c = new Search(fileReceivers);
+			break;
+		case "list":
+			c = new ListFile(directoryReceiver);
+			break;
+		case "view":
+			c = new View(fileReceiver,windowReceiver);
+			break;
+		case "edit":
+			c = new Edit(fileReceiver);
 			break;
 		}
+		c.execute(file);
 	}
 }
