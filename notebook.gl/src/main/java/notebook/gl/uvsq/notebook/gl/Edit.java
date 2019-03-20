@@ -2,20 +2,18 @@ package notebook.gl.uvsq.notebook.gl;
 
 public class Edit extends Command {
 
-	public Edit(Receiver fileReceiver) {
-		// TODO Auto-generated constructor stub
+	private Receiver fileReceiver;
+	private Receiver directoryReceiver;
+	public Edit(Receiver fileReceiver,Receiver directoryReceiver) {
+		this.fileReceiver = fileReceiver;
+		this.directoryReceiver = directoryReceiver;
 	}
 
-	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
 
-	}
 
 	@Override
 	public void execute(String fileName) {
-		// TODO Auto-generated method stub
-		
+		((FileReceiver)fileReceiver).edit(fileName);
 	}
 
 }

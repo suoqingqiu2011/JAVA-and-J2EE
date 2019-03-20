@@ -1,33 +1,24 @@
 package notebook.gl.uvsq.notebook.gl;
 
-import static org.junit.Assert.*;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class AddTest {
 
-
-	private Command add;
-
-
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		
-	}
+	private Command comm;
 
 	@Before
 	public void setUp() throws Exception {
-		Receiver fileReceiver = new FileReceiver();
-		Receiver directoryReceiver = new DirectoryReceiver();
-		Receiver windowReceiver = new WindowReceiver();
-		add = new Add(fileReceiver, directoryReceiver, windowReceiver);
+//		Receiver fileReceiver = new FileReceiver();
+//		Receiver directoryReceiver = new DirectoryReceiver();
+//		Receiver windowReceiver = new WindowReceiver();
+//		comm = new Add(fileReceiver, directoryReceiver, windowReceiver);
 	}
 
 	@Test
 	public void testExecuteString() {
-		add.execute("1.txt");
+		//comm.execute("1.txt");
 	}
 
 }

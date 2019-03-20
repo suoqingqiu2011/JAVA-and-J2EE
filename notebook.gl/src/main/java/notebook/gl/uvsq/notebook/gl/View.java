@@ -2,19 +2,17 @@ package notebook.gl.uvsq.notebook.gl;
 
 public class View extends Command {
 
+	private Receiver fileReceiver;
+	private Receiver windowReceiver;
+	
 	public View(Receiver fileReceiver, Receiver windowReceiver) {
-		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
-
+		this.fileReceiver = fileReceiver;
+		this.windowReceiver = windowReceiver;
 	}
 
 	@Override
 	public void execute(String fileName) {
-		// TODO Auto-generated method stub
+		((FileReceiver)fileReceiver).view(fileName);
 		
 	}
 

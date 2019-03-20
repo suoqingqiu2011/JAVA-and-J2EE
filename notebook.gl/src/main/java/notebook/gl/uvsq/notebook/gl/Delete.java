@@ -9,11 +9,7 @@ public class Delete extends Command {
 		this.fileReceiver = fileReceiver;
 	}
 
-	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
 
-	}
 
 	@Override
 	public void execute(String fileName) {
