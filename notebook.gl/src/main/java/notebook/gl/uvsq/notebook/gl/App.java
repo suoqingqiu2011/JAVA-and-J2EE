@@ -159,5 +159,6 @@ public class App
 		}
 		c.execute(file);
 		c.update((DirectoryReceiver)directoryReceiver);
+		file = "";
 	}
 }

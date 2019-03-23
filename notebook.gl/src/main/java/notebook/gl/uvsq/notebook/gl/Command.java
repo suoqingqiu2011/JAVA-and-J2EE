@@ -10,7 +10,7 @@ public abstract class Command {
 
 	public abstract void execute(String fileName);
 	public void update(DirectoryReceiver dr) {
-		DirectoryWalker directoryWalker = new AsciiDocDirectoryWalker(".");
+		DirectoryWalker directoryWalker = new AsciiDocDirectoryWalker(dr.getPath());
 		List<File> asciidocFiles = directoryWalker.scan();
 		System.out.println(asciidocFiles.size());
 	}

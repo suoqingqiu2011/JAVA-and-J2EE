@@ -92,7 +92,7 @@ public class FileReceiver extends Receiver {
 //		} catch (InterruptedException e) {
 //			e.printStackTrace();
 //		}
-		String vimFile = editor+" "+path+"/"+fileName;
+		String vimFile = editor+" "+path+"/"+fileName+suffix;
 		String[] command = {"/usr/bin/gnome-terminal", "-e", vimFile};
 		Process pr;
 		try {
@@ -122,7 +122,7 @@ public class FileReceiver extends Receiver {
 	}
 
 	public void view(String fileName) {
-		String html = asciidoctor.convertFile(new File(path+"/"+fileName), new HashMap<String,Object>());
+		String html = asciidoctor.convertFile(new File(path+"/"+fileName+suffix), new HashMap<String,Object>());
 		cmd = browser+" "+path+"/"+fileName+".html";
 		try {
 			Runtime runtime = Runtime.getRuntime();
