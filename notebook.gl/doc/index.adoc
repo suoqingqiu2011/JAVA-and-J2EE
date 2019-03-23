@@ -1,0 +1,12 @@
+= Index.adoc
+It's a file generated automaticly, please don't change its content. <author@email.fr>
+
+* October
+* [10]
+
+* Defaut
+* [1, 12, 2, 2, 4, 5, Little pudding&#8217;s happiness life, Number 7, test_adoc]
+
+* September
+* [Perfect World]
+

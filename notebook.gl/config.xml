@@ -4,4 +4,5 @@
 	<browser>/usr/bin/xdg-open</browser>
 	<editor>/usr/bin/vim</editor>
 	<suffix>.adoc</suffix>
+	<order>month</order>
 </configuration>

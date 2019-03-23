@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import org.asciidoctor.Asciidoctor;
@@ -93,7 +94,7 @@ public class FileReceiver extends Receiver {
 //			e.printStackTrace();
 //		}
 		String vimFile = editor+" "+path+"/"+fileName+suffix;
-		String[] command = {"/usr/bin/gnome-terminal", "-e", vimFile};
+		String[] command = {"/usr/bin/gnome-terminal", "--wait","-e", vimFile};
 		Process pr;
 		try {
 			pr = Runtime.getRuntime().exec(command);
@@ -108,11 +109,12 @@ public class FileReceiver extends Receiver {
 
 	public void edit(String fileName) {
 		String vimFile = editor+" "+path+"/"+fileName+suffix;
-		String[] command = {"/usr/bin/gnome-terminal", "-e", vimFile};
-		Process pr;
+		String[] command = {"/usr/bin/gnome-terminal","--wait", "-e", vimFile};		
 		try {
-			pr = Runtime.getRuntime().exec(command);
-			pr.waitFor();  
+			Process pr;
+			Runtime rt = Runtime.getRuntime();
+			pr = rt.exec(command);
+	       int exitVal = pr.waitFor();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {

@@ -1,0 +1,9 @@
+= 10
+writer
+03/10/2019
+:context: home
+:project: bug
+
+* Let's add some contents!
+* Have fun
+* Year is not asked.

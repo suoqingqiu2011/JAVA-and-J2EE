@@ -1,0 +1,6 @@
+= test_adoc
+:context: home
+:project: test
+
+* i should have some contents
+* example 2

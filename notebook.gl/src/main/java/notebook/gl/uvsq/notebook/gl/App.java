@@ -20,9 +20,20 @@ import org.fusesource.jansi.AnsiConsole;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-
 public class App 
 {
+	public enum Range{PROJECT,CONTEXT,UNSET,MONTH};
+	public Range range;
+	public void setRange(String range) {
+		if(range.equals("context")) {
+			this.range = Range.CONTEXT;
+		}else {
+			this.range = Range.PROJECT;
+		}
+	}
+	public Range getRange() {
+		return range;
+	}
 	private String file;
 	public String getFile() {
 		return file;
@@ -30,11 +41,16 @@ public class App
 	public void setFile(String file) {
 		this.file = file;
 	}
+	private Range indexRange;
+	public Range getIndexRange() {
+		return indexRange;
+	}
 	private Receiver fileReceiver;
 	private Receiver directoryReceiver;
 	private Receiver windowReceiver;
 	
 	public App(String file) {
+		
 		this.file = file;	
 		this.windowReceiver = new WindowReceiver();
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -47,6 +63,19 @@ public class App
 			String browser= doc.getElementsByTagName("browser").item(0).getFirstChild().getNodeValue();
 			String editor = doc.getElementsByTagName("editor").item(0).getFirstChild().getNodeValue();
 			String suffix = doc.getElementsByTagName("suffix").item(0).getFirstChild().getNodeValue();
+			String range = doc.getElementsByTagName("order").item(0).getFirstChild().getNodeValue();
+			switch(range){
+			case "context":
+				indexRange=Range.CONTEXT;
+				break;
+			case "project":
+				indexRange=Range.PROJECT;
+				break;
+			case "month":
+				indexRange=Range.MONTH;
+				break;
+			}
+			this.range = App.Range.UNSET;
 			this.directoryReceiver = new DirectoryReceiver(directory);	
 			this.fileReceiver = new FileReceiver(directory,editor,browser,suffix);
 		} catch (ParserConfigurationException e) {
@@ -108,7 +137,12 @@ public class App
     public static void main( String[] args ) throws IOException
     {
     	App app;
-    	if(args.length==2) {
+    	if(args.length==3) {
+    		app = new App(args[1]);
+    		app.setRange(args[2]);
+    		app.handleInput(args[0]);
+    	}
+    	else if(args.length==2) {
     		app = new App(args[1]);
     		app.handleInput(args[0]);
     	}else if(args.length==1){
@@ -118,12 +152,14 @@ public class App
     		app = new App("");
     		app.printJansiLogoDemo();
         	app.printJansiMenuDemo();
+        	AnsiConsole.systemUninstall();
         	String command = "";
         	Scanner sc = new Scanner(System.in);
         	while(true) {
         		command = sc.nextLine();
         		String[] command_file = command.split(" ");
-        		if(command_file.length==2) {
+        		if(command_file.length==3) app.setRange(command_file[2]);
+        		if(command_file.length>=2) {
         			app.setFile(command_file[1]);
         		}
         		app.handleInput(command_file[0]);
@@ -134,31 +170,40 @@ public class App
 	private void handleInput(String comm) {
 		Command c = null;
 		switch(comm) {
+		case "a":
 		case "add":
 			c = new Add(fileReceiver,directoryReceiver,windowReceiver);
 			break;
+		case "d":
 		case "delete":
 			c = new Delete(fileReceiver);
 			break;
+		case "s":
 		case "search":
-			c = new Search(directoryReceiver);
+			c = new Search(directoryReceiver,getRange());
 			break;
+		case "l":
 		case "list":
 			c = new ListFile(directoryReceiver);
 			break;
+		case "v":
 		case "view":
 			c = new View(fileReceiver,windowReceiver);
 			break;
+		case "e":
 		case "edit":
 			c = new Edit(fileReceiver,directoryReceiver);
 			break;
+		case "q":
 		case "quit":
 			System.exit(0);
+		case "h":
+		case "help":
 		default:
-			
+			printJansiMenuDemo();
 		}
 		c.execute(file);
-		c.update((DirectoryReceiver)directoryReceiver);
+		if(file!=null&&file!="") c.update((DirectoryReceiver)directoryReceiver,indexRange);
 		file = "";
 	}
 }
