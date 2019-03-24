@@ -63,7 +63,6 @@ public class App {
 	private Receiver directoryReceiver;
 
 	public App(String file) {
-
 		this.file = file;
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder;

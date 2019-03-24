@@ -17,8 +17,7 @@ public class DirectoryReceiverTest {
 	@Before
 	public void setUp() throws Exception {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder builder;
-		builder = factory.newDocumentBuilder();
+		DocumentBuilder builder = factory.newDocumentBuilder();
 		File xmlFile = new File("config.xml");
 		Document doc = builder.parse(xmlFile);
 		String directory = doc.getElementsByTagName("directory").item(0).getFirstChild().getNodeValue();

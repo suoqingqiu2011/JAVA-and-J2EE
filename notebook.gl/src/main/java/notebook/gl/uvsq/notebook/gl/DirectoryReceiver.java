@@ -34,9 +34,11 @@ import org.asciidoctor.AsciiDocDirectoryWalker;
 import org.asciidoctor.Asciidoctor;
 import org.asciidoctor.Asciidoctor.Factory;
 import org.asciidoctor.DirectoryWalker;
+import org.asciidoctor.ast.DocumentHeader;
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.Ansi.Color;
 import org.fusesource.jansi.AnsiConsole;
+import org.json.JSONObject;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -95,18 +97,29 @@ public class DirectoryReceiver extends Receiver {
 	
 		Asciidoctor asciidoctor = Factory.create();
 		DirectoryWalker directoryWalker = new AsciiDocDirectoryWalker(getPath()); 
-		for (File file : directoryWalker.scan()) {
-			 if(file.getName().equals("index.adoc")) continue;
-	 		 AnsiConsole.out.println(Ansi.ansi().fg(Color.YELLOW).a(asciidoctor.readDocumentHeader(file).getDocumentTitle().getMain()).reset());
-		}
+		
 		Configuration configuration = new Configuration(Configuration.getVersion());
 		try {
 			configuration.setDirectoryForTemplateLoading(new File(ftlDir));
 			configuration.setDefaultEncoding("utf-8");
 			Template template = configuration.getTemplate(ftl);
-			Map root = new HashMap<>();
-			root.put("hello", "helloworld");
-			Writer out = new FileWriter(new File(ftlHtml));
+			JSONObject object = new JSONObject();
+			for (File file : directoryWalker.scan()) {
+				 if(file.getName().equals("index.adoc")) continue;
+		 		 AnsiConsole.out.println(Ansi.ansi().fg(Color.YELLOW).a(asciidoctor.readDocumentHeader(file).getDocumentTitle().getMain()).reset());
+		 		 DocumentHeader dh = asciidoctor.readDocumentHeader(file);		 		 
+			     JSONObject jsonObject1 = new JSONObject();
+			     jsonObject1.put("Author",dh.getAuthor());
+			     jsonObject1.put("Date",dh.getRevisionInfo().getDate());
+			     jsonObject1.put("Project",dh.getAttributes().get("project"));
+			     jsonObject1.put("Context",dh.getAttributes().get("context"));
+			     object.put(dh.getDocumentTitle().getMain(),jsonObject1);
+			}
+			
+			Map root = new HashMap();
+			root.put("info", object);
+				
+			Writer out = new FileWriter(new File(ftlHtml));	
 			template.process(root, out);
 			out.flush();
 			out.close();
@@ -114,6 +127,13 @@ public class DirectoryReceiver extends Receiver {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		/*
+		{"ma deuxieme note":
+			[{"date":"24/03/2019","author":{"firstName":"pavle","fullName":"pavle","initials":"p"}},
+			{"context":"note","project":"calcul securise"}],
+			
+			"something wrong":[{"date":"24/03/2019","author":{"firstName":"pavle","fullName":"pavle","initials":"p"}},{"context":"bug","project":"prog"}],"test":[{"date":"24/03/2019","author":{"firstName":"pavle","fullName":"pavle","initials":"p"}},{"context":"test","project":"test"}],"mode dutilisation":[{"date":"24/03/2019","author":{"firstName":"pavle","fullName":"pavle","initials":"p"}},{"context":"bug","project":"prog"}],"ma premiere note":[{"date":"24/03/2019","author":{"firstName":"pavle","fullName":"pavle","initials":"p"}},{"context":"note","project":"gl"}],"cool kid":[{"date":"24/03/2019","author":{"firstName":"pavle","fullName":"pavle","initials":"p"}},{"context":"dairy","project":"dairy"}],"not cool kid":[{"date":"24/03/2019","author":{"firstName":"pavle","fullName":"pavle","initials":"p"}},{"context":"daily","project":"daily"}],"maven config tutorial":[{"date":"24/03/2019","author":{"firstName":"pavle","fullName":"pavle","initials":"p"}},{"context":"tuto","project":"gl"}]}
+		*/
 		
 	}
 
@@ -224,48 +244,5 @@ public class DirectoryReceiver extends Receiver {
 	    		
 	}
 	
-	
-//	public void search(String word, String attri) {
-//	    try {
-//	    	Analyzer analyzer = new StandardAnalyzer();
-//		    Path indexPath = Files.createTempDirectory("tempIndex");
-//		    Directory directory = FSDirectory.open(indexPath);
-//		    IndexWriterConfig config = new IndexWriterConfig(analyzer);
-//		    IndexWriter iwriter = new IndexWriter(directory, config);		   
-//		    DirectoryWalker directoryWalker = new AsciiDocDirectoryWalker(getPath()); 
-//		    Document doc = new Document(); 
-//		    int count =0;
-//		    for (File file : directoryWalker.scan()) {
-//		    	if(file.getName().equals("index.adoc")) continue;
-//		    	StringBuffer sb = new StringBuffer();
-//		    	Outil.readToBuffer(sb, file.getPath());
-//		       //String index = (String) asciidoctor.readDocumentHeader(file).getAttributes().get(attri);
-//		       doc.add(new Field("fileContent", sb.toString(), TextField.TYPE_STORED));
-//		       count += 1;
-//		       iwriter.addDocument(doc);
-//		    }
-//		 	iwriter.close();
-//		 	// Now search the index:
-//		    DirectoryReader ireader = DirectoryReader.open(directory);
-//		 	IndexSearcher isearcher = new IndexSearcher(ireader);
-//		    // Parse a simple query that searches for "text":
-//		 	QueryParser parser = new QueryParser("fileContent", analyzer);
-//		 	word = "\\:"+attri+"\\: "+word;
-//		 	Query query = parser.parse("test");
-//		 	ScoreDoc[] hits = isearcher.search(query, count).scoreDocs;
-//		 	// Iterate through the results:
-//		 	for (int i = 0; i < hits.length; i++) {
-//		 	      Document hitDoc = isearcher.doc(hits[i].doc);
-//		 	      System.out.println(Arrays.toString(hitDoc.getValues("fileContent")));
-//		    }	    	    	    	
-//			ireader.close();
-//			directory.close();
-//		    IOUtils.rm(indexPath);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		} catch (ParseException e) {
-//			e.printStackTrace();
-//		}
-//	    		
-//	}
+
 }
