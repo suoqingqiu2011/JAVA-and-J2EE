@@ -3,10 +3,8 @@ package notebook.gl.uvsq.notebook.gl;
 public class Edit extends Command {
 
 	private Receiver fileReceiver;
-	private Receiver directoryReceiver;
-	public Edit(Receiver fileReceiver,Receiver directoryReceiver) {
+	public Edit(Receiver fileReceiver) {
 		this.fileReceiver = fileReceiver;
-		this.directoryReceiver = directoryReceiver;
 	}
 
 

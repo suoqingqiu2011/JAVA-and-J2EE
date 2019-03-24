@@ -1,0 +1,29 @@
+package pglp;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Properties;
+
+public class JDBCDAOPersonnel extends DAOPersonnel {
+
+	public JDBCDAOPersonnel() {
+		try {
+			Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+			String dburl = "jdbc:derby:personnelDb;create=true";
+			Properties connectionProps = new Properties();
+			connectionProps.put("user", "admin");
+			connectionProps.put("password", "admin");
+			try {
+				Connection conn = DriverManager.getConnection(dburl);
+				this.conn = conn;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+}

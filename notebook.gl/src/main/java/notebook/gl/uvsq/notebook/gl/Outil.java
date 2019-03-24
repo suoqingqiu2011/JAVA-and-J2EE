@@ -13,7 +13,6 @@ public class Outil {
      * @param filePath 文件路径
      * @throws IOException 异常
      * @author cn.outofmemory
-     * @date 2013-1-7
      */
     public static void readToBuffer(StringBuffer buffer, String filePath) throws IOException {
         InputStream is = new FileInputStream(filePath);

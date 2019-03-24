@@ -2,16 +2,17 @@ package notebook.gl.uvsq.notebook.gl;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -33,12 +34,20 @@ import org.asciidoctor.AsciiDocDirectoryWalker;
 import org.asciidoctor.Asciidoctor;
 import org.asciidoctor.Asciidoctor.Factory;
 import org.asciidoctor.DirectoryWalker;
-import org.asciidoctor.ast.DocumentHeader;
-import org.jruby.RubyIO.Sysopen;
+import org.fusesource.jansi.Ansi;
+import org.fusesource.jansi.Ansi.Color;
+import org.fusesource.jansi.AnsiConsole;
+
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 
 public class DirectoryReceiver extends Receiver {
 
 	private String path;
+	private String ftlDir;
+	private String ftl;
+	private String ftlHtml;
 	
 	public String getPath() {
 		return path;
@@ -52,6 +61,13 @@ public class DirectoryReceiver extends Receiver {
 		this.path = path;
 	}
 	
+	public DirectoryReceiver(String directory, String ftlDir, String ftl, String fHtml) {
+		this(directory);
+		this.ftlDir = ftlDir;
+		this.ftl = ftl;
+		this.ftlHtml = fHtml;
+	}
+
 	//unused
 	public void list() {
 		System.out.println(path);
@@ -76,23 +92,29 @@ public class DirectoryReceiver extends Receiver {
 	}
 	
 	public void list(String fileName) {
-		cmd = "/usr/bin/ls "+path+fileName;
+	
+		Asciidoctor asciidoctor = Factory.create();
+		DirectoryWalker directoryWalker = new AsciiDocDirectoryWalker(getPath()); 
+		for (File file : directoryWalker.scan()) {
+			 if(file.getName().equals("index.adoc")) continue;
+	 		 AnsiConsole.out.println(Ansi.ansi().fg(Color.YELLOW).a(asciidoctor.readDocumentHeader(file).getDocumentTitle().getMain()).reset());
+		}
+		Configuration configuration = new Configuration(Configuration.getVersion());
 		try {
-			Runtime runtime = Runtime.getRuntime();
-			process = runtime.exec(cmd);
-			InputStream is = process.getInputStream();
-			InputStreamReader isr = new InputStreamReader(is, "gbk"); 
-			BufferedReader br = new BufferedReader(isr);
-			String line;
-			while ((line = br.readLine()) != null){
-				System.out.println(line);
-			}
-			is.close();
-			isr.close();
-			br.close();
-		}catch (IOException e){
+			configuration.setDirectoryForTemplateLoading(new File(ftlDir));
+			configuration.setDefaultEncoding("utf-8");
+			Template template = configuration.getTemplate(ftl);
+			Map root = new HashMap<>();
+			root.put("hello", "helloworld");
+			Writer out = new FileWriter(new File(ftlHtml));
+			template.process(root, out);
+			out.flush();
+			out.close();
+		} catch (IOException | TemplateException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
 
 	public void search(String word) {	
@@ -128,7 +150,7 @@ public class DirectoryReceiver extends Receiver {
 		 	// Iterate through the results:
 		 	for (int i = 0; i < hits.length; i++) {
 		 		  Document hitDoc = isearcher.doc(hits[i].doc);
-		 		  System.out.println(Arrays.toString(hitDoc.getValues("fileContent")));
+		 		 AnsiConsole.out.println(Ansi.ansi().fg(Color.YELLOW).a(Arrays.toString(hitDoc.getValues("fileContent"))).reset());
 		 	}	    	    
 			ireader.close();
 			directory.close();
@@ -158,9 +180,15 @@ public class DirectoryReceiver extends Receiver {
 		    for (File f : asciidocFiles) {
 		    	if(f.getName().equals("index.adoc")) continue;
 		    		Document doc = new Document(); 
-		    		String index = (String) asciidoctor.readDocumentHeader(f).getAttributes().get(attri);
-		    		index += " "+asciidoctor.readDocumentHeader(f).getDocumentTitle().getMain();
-		 		    doc.add(new Field("fileContent", index, TextField.TYPE_STORED));
+		    		String index="";
+		    		if(attri.toLowerCase().equals("title")) {
+		    			index += asciidoctor.readDocumentHeader(f).getDocumentTitle().getMain();
+		    		}
+		    		else{
+		    			index += (String) asciidoctor.readDocumentHeader(f).getAttributes().get(attri);
+		    			index += " "+asciidoctor.readDocumentHeader(f).getDocumentTitle().getMain();
+		    		}
+		    		doc.add(new Field("fileContent", index, TextField.TYPE_STORED));
 		 		    iwriter.addDocument(doc);
 		    }
 		    iwriter.close(); 
@@ -172,12 +200,15 @@ public class DirectoryReceiver extends Receiver {
 		 	Query query = parser.parse(word);
 		 	ScoreDoc[] hits = isearcher.search(query, count).scoreDocs;
 		 	// Iterate through the results:
-		 	System.out.println("We have found these notes for "+attri+" : "+word);
+		 	AnsiConsole.out.println(Ansi.ansi().fg(Color.YELLOW).a("We have found these notes for "+attri+" : "+word).reset());
 		 	for (int i = 0; i < hits.length; i++) {
 		
 		 		  Document hitDoc = isearcher.doc(hits[i].doc);
 		 		  for(String item:hitDoc.getValues("fileContent")) {
-		 			  if(item.indexOf(word)==0) {
+		 			  if(attri.toLowerCase().equals("title")) {
+		 				  System.out.println(item);
+		 			  }
+		 			  else if(item.indexOf(word)==0) {
 		 				  System.out.println(item.substring(word.length()+1));
 		 			  }
 		 		  }	  

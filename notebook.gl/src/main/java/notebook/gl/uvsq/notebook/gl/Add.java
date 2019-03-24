@@ -3,13 +3,9 @@ package notebook.gl.uvsq.notebook.gl;
 public class Add extends Command {
 	
 	private Receiver fileReceiver;
-	private Receiver windowReceiver;
-	private Receiver directoryReceiver;
 
-	public Add(Receiver fileReceiver, Receiver directoryReceiver, Receiver windowReceiver) {
+	public Add(Receiver fileReceiver) {
 		this.fileReceiver = fileReceiver;
-		this.windowReceiver = windowReceiver;
-		this.directoryReceiver = directoryReceiver;
 	}
 
 
@@ -17,7 +13,6 @@ public class Add extends Command {
 	@Override
 	public void execute(String fileName) {
 		((FileReceiver)fileReceiver).add(fileName);
-		((WindowReceiver)windowReceiver).open();
 	}
 
 }

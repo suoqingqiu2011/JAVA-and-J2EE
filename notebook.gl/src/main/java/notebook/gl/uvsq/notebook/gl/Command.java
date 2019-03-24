@@ -32,7 +32,6 @@ public abstract class Command {
 				 value = asciidoctor.readDocumentHeader(file).getRevisionInfo().getDate();
 				 if(value!=null) {
 					 value = value.split("/")[1];
-				 
 					 switch(value) {
 					 case "01":
 						 value="January";

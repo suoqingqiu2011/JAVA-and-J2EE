@@ -1,0 +1,9 @@
+= maven config tutorial
+pavle
+24/03/2019
+:context: tuto 
+:project: gl
+
+* pom.xml
+* mvn install:install-file -Dfile -Dversion -DgroupId -DartificatId
+

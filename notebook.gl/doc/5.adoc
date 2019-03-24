@@ -1,3 +1,0 @@
-= 5
-:context: home
-:project: cooking

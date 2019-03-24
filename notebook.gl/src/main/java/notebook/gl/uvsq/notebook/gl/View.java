@@ -3,11 +3,9 @@ package notebook.gl.uvsq.notebook.gl;
 public class View extends Command {
 
 	private Receiver fileReceiver;
-	private Receiver windowReceiver;
 	
-	public View(Receiver fileReceiver, Receiver windowReceiver) {
+	public View(Receiver fileReceiver) {
 		this.fileReceiver = fileReceiver;
-		this.windowReceiver = windowReceiver;
 	}
 
 	@Override

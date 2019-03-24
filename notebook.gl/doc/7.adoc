@@ -1,4 +1,0 @@
-= Number 7
-author
-:context: home
-:project: read

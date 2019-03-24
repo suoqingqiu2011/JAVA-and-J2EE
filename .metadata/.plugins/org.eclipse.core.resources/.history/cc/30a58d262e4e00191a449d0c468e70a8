@@ -1,0 +1,230 @@
+package notebook.gl.uvsq.notebook.gl;
+
+import java.io.BufferedReader;
+import java.io.Closeable;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.util.Scanner;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.fusesource.jansi.Ansi;
+import org.fusesource.jansi.Ansi.Color;
+import org.fusesource.jansi.AnsiConsole;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+public class App 
+{
+	public enum Range{PROJECT,CONTEXT,UNSET,MONTH};
+	public Range range;
+	public void setRange(String range) {
+		if(range.equals("context")) {
+			this.range = Range.CONTEXT;
+		}else {
+			this.range = Range.PROJECT;
+		}
+	}
+	public Range getRange() {
+		return range;
+	}
+	private String file;
+	public String getFile() {
+		return file;
+	}
+	public void setFile(String file) {
+		this.file = file;
+	}
+	private Range indexRange;
+	public Range getIndexRange() {
+		return indexRange;
+	}
+	private Receiver fileReceiver;
+	private Receiver directoryReceiver;
+	private Receiver windowReceiver;
+	
+	public App(String file) {
+		
+		this.file = file;	
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder;
+		try {
+			builder = factory.newDocumentBuilder();
+			File xmlFile = new File("config.xml");
+			Document doc = builder.parse(xmlFile);
+			String directory = doc.getElementsByTagName("directory").item(0).getFirstChild().getNodeValue();
+			String browser= doc.getElementsByTagName("browser").item(0).getFirstChild().getNodeValue();
+			String editor = doc.getElementsByTagName("editor").item(0).getFirstChild().getNodeValue();
+			String suffix = doc.getElementsByTagName("suffix").item(0).getFirstChild().getNodeValue();
+			String range = doc.getElementsByTagName("order").item(0).getFirstChild().getNodeValue();
+			switch(range){
+			case "context":
+				indexRange=Range.CONTEXT;
+				break;
+			case "project":
+				indexRange=Range.PROJECT;
+				break;
+			case "month":
+				indexRange=Range.MONTH;
+				break;
+			}
+			this.range = App.Range.UNSET;
+			this.directoryReceiver = new DirectoryReceiver(directory);	
+			this.fileReceiver = new FileReceiver(directory,editor,browser,suffix);
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch (SAXException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void printJansiMenuDemo() {
+		Reader in = new InputStreamReader(this.getClass().getResourceAsStream("menu.txt"));
+		try {
+			char[] buf = new char[1024];
+			int l = 0;
+			try {
+				while ((l = in.read(buf)) >= 0) {
+					for (int i = 0; i < l; i++) {
+						AnsiConsole.out.print(Ansi.ansi().fg(Color.YELLOW).a(buf[i]).reset());
+					}
+				}
+				AnsiConsole.out.println();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} finally {
+			closeQuietly(in);
+		}
+
+	}
+
+	public void printJansiLogoDemo() throws IOException {
+
+		Reader in = new InputStreamReader(getClass().getResourceAsStream("logo.txt"));
+		try {
+			char[] buf = new char[1024];
+			int l = 0;
+			while ((l = in.read(buf)) >= 0) {
+				for (int i = 0; i < l; i++) {
+					AnsiConsole.out.print(Ansi.ansi().fg(Color.CYAN).a(buf[i]).reset());
+				}
+			}
+			AnsiConsole.out.println();
+		} finally {
+			closeQuietly(in);
+		}
+	}
+	
+	public void closeQuietly(Closeable c) {
+		try {
+			c.close();
+		} catch (IOException ioe) {
+			ioe.printStackTrace(System.err);
+		}
+	}
+	
+	
+    public static void main( String[] args ) throws IOException
+    {
+    	
+    	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		String in = null;
+		App app=new App("");
+		app.printJansiLogoDemo();
+    	app.printJansiMenuDemo();
+    	AnsiConsole.systemUninstall();
+		while((in = br.readLine()) != null){
+			System.out.println("用户输入的是： "+in);
+			String[] arguments = in.split(" "); 
+			int i=in.lastIndexOf("-r");
+			if(i!=-1) {
+				app.setRange(arguments[arguments.length-1]);
+				app.setFile(in.substring(in.indexOf(" ")+1,in.indexOf("-r")-1));
+			}else {
+				if(in.contains(" ")) {
+					String tmpFile = in.substring(in.indexOf(" ")+1); 
+					tmpFile.replaceAll(" ", "\\ ");
+					System.out.println(tmpFile);
+					app.setFile(tmpFile);
+				}
+			}
+			app.handleInput(arguments[0]);
+		}		
+    	
+    	
+//    	if(args.length==3) {
+//    		app = new App(args[1]);
+//    		app.setRange(args[2]);
+//    		app.handleInput(args[0]);
+//    	}
+//    	else if(args.length==2) {
+//    		app = new App(args[1]);
+//    		app.handleInput(args[0]);
+//    	}else if(args.length==1){
+//    		app = new App("");
+//    		app.handleInput(args[0]);
+//    	}else {
+//    		app = new App("");
+//    		
+//        	String command = "";
+//        	Scanner sc = new Scanner(System.in);
+//        	while(true) {
+//        		command = sc.nextLine();
+//        		String[] command_file = command.split(" ");
+//        		if(command_file.length==3) app.setRange(command_file[2]);
+//        		if(command_file.length>=2) {
+//        			app.setFile(command_file[1]);
+//        		}
+//        		app.handleInput(command_file[0]);
+//        	}
+//    	}	
+    }
+
+	private void handleInput(String comm) {
+		Command c = null;
+		switch(comm) {
+		case "a":
+		case "add":
+			c = new Add(fileReceiver,directoryReceiver,windowReceiver);
+			break;
+		case "d":
+		case "delete":
+			c = new Delete(fileReceiver);
+			break;
+		case "s":
+		case "search":
+			c = new Search(directoryReceiver,getRange());
+			break;
+		case "l":
+		case "list":
+			c = new ListFile(directoryReceiver);
+			break;
+		case "v":
+		case "view":
+			c = new View(fileReceiver,windowReceiver);
+			break;
+		case "e":
+		case "edit":
+			c = new Edit(fileReceiver,directoryReceiver);
+			break;
+		case "q":
+		case "quit":
+			System.exit(0);
+		case "h":
+		case "help":
+		default:
+			printJansiMenuDemo();
+			return;
+		}
+		c.execute(file);
+		if(file!=null&&file!="") c.update((DirectoryReceiver)directoryReceiver,indexRange);
+		file = "";
+	}
+}

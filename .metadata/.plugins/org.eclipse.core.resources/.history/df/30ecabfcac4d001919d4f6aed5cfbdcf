@@ -1,0 +1,9 @@
+[add + fileName] add file
+[edit + fileName] edit file
+[list] list files
+[delete + fileName] remove file
+[search + wordName] search word
+[quit] quit
+
+[*] Notes should not have suffix for being able to be transformed.
+[*] Files names should be different and should not contain espace.

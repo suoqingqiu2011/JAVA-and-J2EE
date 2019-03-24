@@ -1,5 +1,0 @@
-= Perfect World
-author name
-09/09/2000
-:context: livre
-:project: read

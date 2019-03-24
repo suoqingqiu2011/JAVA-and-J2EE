@@ -1,13 +1,12 @@
 package notebook.gl.uvsq.notebook.gl;
 
+import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -20,39 +19,52 @@ import org.fusesource.jansi.AnsiConsole;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-public class App 
-{
-	public enum Range{PROJECT,CONTEXT,UNSET,MONTH};
+public class App {
+	public enum Range {
+		PROJECT, CONTEXT, TITLE, UNSET, MONTH
+	};
+
 	public Range range;
+
 	public void setRange(String range) {
-		if(range.equals("context")) {
+		switch (range) {
+		case "context":
 			this.range = Range.CONTEXT;
-		}else {
+			break;
+		case "project":
 			this.range = Range.PROJECT;
+			break;
+		default:
+			this.range = Range.TITLE;
 		}
 	}
+
 	public Range getRange() {
 		return range;
 	}
+
 	private String file;
+
 	public String getFile() {
 		return file;
 	}
+
 	public void setFile(String file) {
 		this.file = file;
 	}
+
 	private Range indexRange;
+
 	public Range getIndexRange() {
 		return indexRange;
 	}
+
 	private Receiver fileReceiver;
 	private Receiver directoryReceiver;
-	private Receiver windowReceiver;
-	
+
 	public App(String file) {
-		
-		this.file = file;	
-		this.windowReceiver = new WindowReceiver();
+
+		this.file = file;
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder;
 		try {
@@ -60,24 +72,27 @@ public class App
 			File xmlFile = new File("config.xml");
 			Document doc = builder.parse(xmlFile);
 			String directory = doc.getElementsByTagName("directory").item(0).getFirstChild().getNodeValue();
-			String browser= doc.getElementsByTagName("browser").item(0).getFirstChild().getNodeValue();
+			String browser = doc.getElementsByTagName("browser").item(0).getFirstChild().getNodeValue();
 			String editor = doc.getElementsByTagName("editor").item(0).getFirstChild().getNodeValue();
 			String suffix = doc.getElementsByTagName("suffix").item(0).getFirstChild().getNodeValue();
 			String range = doc.getElementsByTagName("order").item(0).getFirstChild().getNodeValue();
-			switch(range){
+			switch (range) {
 			case "context":
-				indexRange=Range.CONTEXT;
+				indexRange = Range.CONTEXT;
 				break;
 			case "project":
-				indexRange=Range.PROJECT;
+				indexRange = Range.PROJECT;
 				break;
 			case "month":
-				indexRange=Range.MONTH;
+				indexRange = Range.MONTH;
 				break;
 			}
 			this.range = App.Range.UNSET;
-			this.directoryReceiver = new DirectoryReceiver(directory);	
-			this.fileReceiver = new FileReceiver(directory,editor,browser,suffix);
+			String ftlDir = doc.getElementsByTagName("freemarkerDirectory").item(0).getFirstChild().getNodeValue();
+			String ftl = doc.getElementsByTagName("freemarkerTemplateFile").item(0).getFirstChild().getNodeValue();
+			String fHtml = doc.getElementsByTagName("freemarkerTemplateOutHtml").item(0).getFirstChild().getNodeValue();
+			this.directoryReceiver = new DirectoryReceiver(directory,ftlDir,ftl,fHtml);
+			this.fileReceiver = new FileReceiver(directory, editor, browser, suffix);
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
 		} catch (SAXException e) {
@@ -86,7 +101,7 @@ public class App
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void printJansiMenuDemo() {
 		Reader in = new InputStreamReader(this.getClass().getResourceAsStream("menu.txt"));
 		try {
@@ -109,7 +124,6 @@ public class App
 	}
 
 	public void printJansiLogoDemo() throws IOException {
-
 		Reader in = new InputStreamReader(getClass().getResourceAsStream("logo.txt"));
 		try {
 			char[] buf = new char[1024];
@@ -124,7 +138,7 @@ public class App
 			closeQuietly(in);
 		}
 	}
-	
+
 	public void closeQuietly(Closeable c) {
 		try {
 			c.close();
@@ -132,47 +146,54 @@ public class App
 			ioe.printStackTrace(System.err);
 		}
 	}
-	
-	
-    public static void main( String[] args ) throws IOException
-    {
-    	App app;
-    	if(args.length==3) {
-    		app = new App(args[1]);
-    		app.setRange(args[2]);
-    		app.handleInput(args[0]);
-    	}
-    	else if(args.length==2) {
-    		app = new App(args[1]);
-    		app.handleInput(args[0]);
-    	}else if(args.length==1){
-    		app = new App("");
-    		app.handleInput(args[0]);
-    	}else {
-    		app = new App("");
-    		app.printJansiLogoDemo();
-        	app.printJansiMenuDemo();
-        	AnsiConsole.systemUninstall();
-        	String command = "";
-        	Scanner sc = new Scanner(System.in);
-        	while(true) {
-        		command = sc.nextLine();
-        		String[] command_file = command.split(" ");
-        		if(command_file.length==3) app.setRange(command_file[2]);
-        		if(command_file.length>=2) {
-        			app.setFile(command_file[1]);
-        		}
-        		app.handleInput(command_file[0]);
-        	}
-    	}	
-    }
+
+	public static void main(String[] args) throws IOException {
+		if (args != null) {
+			App app = new App("");
+			String arg = Arrays.toString(args);
+			int i = arg.lastIndexOf("-r");
+			if (i != -1) {
+				app.setRange(args[args.length - 1]);
+				app.setFile(arg.substring(arg.indexOf(" ") + 1, arg.indexOf("-r") - 2));
+			} else {
+				if (arg.contains(",")) {
+					String tmpFile = arg.substring(arg.indexOf(",") + 1,arg.length()-1);
+					tmpFile = tmpFile.replaceAll(" ","");
+					tmpFile = tmpFile.replaceAll(","," ");
+					app.setFile(tmpFile);
+				}
+			}
+			app.handleInput(args[0]);
+		} else {
+			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+			String in = null;
+			App app = new App("");
+			app.printJansiLogoDemo();
+			app.printJansiMenuDemo();
+			AnsiConsole.systemUninstall();
+			while ((in = br.readLine()) != null) {
+				String[] arguments = in.split(" ");
+				int i = in.lastIndexOf("-r");
+				if (i != -1) {
+					app.setRange(arguments[arguments.length - 1]);
+					app.setFile(in.substring(in.indexOf(" ") + 1, in.indexOf("-r") - 1));
+				} else {
+					if (in.contains(" ")) {
+						String tmpFile = in.substring(in.indexOf(" ") + 1);
+						app.setFile(tmpFile);
+					}
+				}
+				app.handleInput(arguments[0]);
+			}
+		}
+	}
 
 	private void handleInput(String comm) {
 		Command c = null;
-		switch(comm) {
+		switch (comm) {
 		case "a":
 		case "add":
-			c = new Add(fileReceiver,directoryReceiver,windowReceiver);
+			c = new Add(fileReceiver);
 			break;
 		case "d":
 		case "delete":
@@ -180,7 +201,7 @@ public class App
 			break;
 		case "s":
 		case "search":
-			c = new Search(directoryReceiver,getRange());
+			c = new Search(directoryReceiver, getRange());
 			break;
 		case "l":
 		case "list":
@@ -188,11 +209,11 @@ public class App
 			break;
 		case "v":
 		case "view":
-			c = new View(fileReceiver,windowReceiver);
+			c = new View(fileReceiver);
 			break;
 		case "e":
 		case "edit":
-			c = new Edit(fileReceiver,directoryReceiver);
+			c = new Edit(fileReceiver);
 			break;
 		case "q":
 		case "quit":
@@ -201,9 +222,12 @@ public class App
 		case "help":
 		default:
 			printJansiMenuDemo();
+			return;
 		}
 		c.execute(file);
-		if(file!=null&&file!="") c.update((DirectoryReceiver)directoryReceiver,indexRange);
+		if (file != null && file != "")
+			c.update((DirectoryReceiver) directoryReceiver, indexRange);
 		file = "";
+		range = Range.UNSET;
 	}
 }

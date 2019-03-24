@@ -1,0 +1,59 @@
+package notebook.gl.uvsq.notebook.gl;
+
+import java.io.Closeable;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+
+import org.fusesource.jansi.Ansi;
+import org.fusesource.jansi.Ansi.Color;
+import org.fusesource.jansi.AnsiConsole;
+
+public class Notebook {
+	private void printJansiMenuDemo() {
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		Reader in = new InputStreamReader(this.getClass().getResourceAsStream("menu.txt"));
+		try {
+			char[] buf = new char[1024];
+			int l = 0;
+			try {
+				while ((l = in.read(buf)) >= 0) {
+					for (int i = 0; i < l; i++) {
+						AnsiConsole.out.print(Ansi.ansi().fg(Color.YELLOW).a(buf[i]).reset());
+					}
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} finally {
+			closeQuietly(in);
+		}
+
+	}
+
+	private void printJansiLogoDemo() throws IOException {
+		Reader in = new InputStreamReader(getClass().getResourceAsStream("logo.txt"));
+		try {
+			char[] buf = new char[1024];
+			int l = 0;
+			while ((l = in.read(buf)) >= 0) {
+				for (int i = 0; i < l; i++) {
+					AnsiConsole.out.print(Ansi.ansi().fg(Color.CYAN).a(buf[i]).reset());
+				}
+			}
+		} finally {
+			closeQuietly(in);
+		}
+	}
+	
+	private void closeQuietly(Closeable c) {
+		try {
+			c.close();
+		} catch (IOException ioe) {
+			ioe.printStackTrace(System.err);
+		}
+	}
+
+}

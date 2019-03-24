@@ -13,11 +13,10 @@ public class Search extends Command {
 		this.range = range;
 	}
 
-
 	@Override
 	public void execute(String fileName) {
-		if(range != App.Range.UNSET) {
-			((DirectoryReceiver)directoryReceiver).search(fileName,range.toString());
+		if(this.range != App.Range.UNSET) {
+			((DirectoryReceiver)directoryReceiver).search(fileName,this.range.toString());
 		}else {
 			((DirectoryReceiver)directoryReceiver).search(fileName);
 		}

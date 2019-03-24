@@ -1,0 +1,23 @@
+package notebook.gl.uvsq.notebook.gl;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class AppTest {
+	App app;
+	private void before() {
+		App app = new App();
+		this.app = app;
+	}
+	@Test
+	public void testPrintJansiMenuDemo() {
+		app.printJansiLogoDemo();
+	}
+
+	@Test
+	public void testPrintJansiLogoDemo() {
+		fail("Not yet implemented");
+	}
+
+}

@@ -1,3 +1,0 @@
-= 2
-:context: work
-:project: meeting

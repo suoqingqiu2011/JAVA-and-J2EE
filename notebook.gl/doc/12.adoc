@@ -1,3 +1,0 @@
-= 12
-:context: gnome wait
-:project: gl

@@ -1,0 +1,31 @@
+package notebook.gl.uvsq.notebook.gl;
+
+import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+public class EditTest2 {
+
+
+	private Command comm;
+
+
+	@Before
+	public void setUp() throws Exception {
+		Receiver fileReceiver = new FileReceiver();
+		comm = new Edit(fileReceiver);
+	}
+
+	@Test
+	public void testExecuteString() {
+		comm.execute("1.txt");
+	}
+	
+	@Test
+	public void testExecute() {
+		comm.execute();
+	}
+
+}

@@ -1,0 +1,57 @@
+package notebook.gl.uvsq.notebook.gl;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.asciidoctor.AsciiDocDirectoryWalker;
+import org.asciidoctor.Asciidoctor;
+import org.asciidoctor.Asciidoctor.Factory;
+import org.asciidoctor.DirectoryWalker;
+
+public abstract class Command {
+
+	public abstract void execute(String fileName);
+
+	public void update(DirectoryReceiver dr, App.Range order) {
+		Asciidoctor asciidoctor = Factory.create();
+		 List<String> files = new ArrayList<String>();
+		 DirectoryWalker directoryWalker = new AsciiDocDirectoryWalker(dr.getPath()); 
+		 Map<String,ArrayList<String>> filesMap=new HashMap(); 
+		 for (File file : directoryWalker.scan()) {
+			 if(file.getName().equals("index.adoc")) continue;
+			 String value = (String) asciidoctor.readDocumentHeader(file).getAttributes().get(order.toString());
+			 List<String> tmpFiles = filesMap.get(value);
+			 if(tmpFiles!=null) files = tmpFiles;
+			 files.add(asciidoctor.readDocumentHeader(file).getDocumentTitle().getMain());
+			 filesMap.put(value, (ArrayList<String>) files);
+			 files = new ArrayList<String>();
+		 }
+		    File indexADoc = new File(dr.getPath()+"/index.adoc");
+		    try {
+		    	
+		    		PrintWriter pw = new PrintWriter(indexADoc);
+		    		pw.append("= Index.adoc\n");
+		    		pw.append("It's a file generated automatiquement, please don't change its content. <author@email.fr>\n");
+		    		pw.append("\n");
+		
+				for(String key:filesMap.keySet()) {
+					pw.append("*"+key+"\n");
+					 files = filesMap.get(key);
+					 Collections.sort(files);
+					 pw.append(files.toString());
+					 pw.append("\n");
+				 }
+				pw.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	}
+}

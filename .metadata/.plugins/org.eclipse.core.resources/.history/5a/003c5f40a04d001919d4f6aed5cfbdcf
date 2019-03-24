@@ -1,0 +1,23 @@
+package notebook.gl.uvsq.notebook.gl;
+
+import java.util.List;
+
+public class Search extends Command {
+
+	private Receiver directoryReceiver;
+	private App.Range range = App.Range.unset;
+	public Search(Receiver directoryReceiver,App.Range range) {
+		this.directoryReceiver = directoryReceiver;
+		this.range = range;
+	}
+
+
+	@Override
+	public void execute(String fileName) {
+		((DirectoryReceiver)directoryReceiver).search(fileName);
+		if(range != App.Range.unset) {
+			
+		}
+	}
+
+}
