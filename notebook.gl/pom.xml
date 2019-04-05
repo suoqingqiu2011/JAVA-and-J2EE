@@ -118,36 +118,36 @@
     	<version>1.3</version>
     	<scope>test</scope>
 	</dependency>
-  	<dependency>
-    	<groupId>jansi</groupId>  
-		<artifactId>jansi</artifactId>  
-		<version>1.17</version>  
-    </dependency>
-     <dependency>
-    <groupId>org.asciidoctor</groupId>
-    	<artifactId>asciidoctorj</artifactId>
-    	<version>1.6.1</version> 
+	<dependency>
+	    <groupId>org.fusesource.jansi</groupId>
+	    <artifactId>jansi</artifactId>
+	    <version>1.18</version>
+	</dependency>
+	<dependency>
+    	<groupId>org.asciidoctor</groupId>
+        <artifactId>asciidoctor-maven-plugin</artifactId>
+        <version>1.5.6</version>  
   	</dependency>
   	 <dependency>
-    <groupId>luceneDemo</groupId>
-    	<artifactId>luceneDemo</artifactId>
-    	<version>8</version> 
-  	</dependency>
+    <groupId>org.apache.lucene</groupId>
+    <artifactId>lucene-demo</artifactId>
+    <version>8.0.0</version>
+</dependency>
   	<dependency>
-    <groupId>luceneCore</groupId>
-    	<artifactId>luceneCore</artifactId>
-    	<version>8</version> 
-  	</dependency>
+    <groupId>org.apache.lucene</groupId>
+    <artifactId>lucene-core</artifactId>
+    <version>8.0.0</version>
+</dependency>
   	<dependency>
-    <groupId>luceneAnalyzers</groupId>
-    	<artifactId>luceneAnalyzers</artifactId>
-    	<version>8</version> 
-  	</dependency>
+    <groupId>org.apache.lucene</groupId>
+    <artifactId>lucene-analyzers-common</artifactId>
+    <version>8.0.0</version>
+</dependency>
   	<dependency>
-    <groupId>luceneQueryParser</groupId>
-    	<artifactId>luceneQueryParser</artifactId>
-    	<version>8</version> 
-  	</dependency>
+    <groupId>org.apache.lucene</groupId>
+    <artifactId>lucene-queryparser</artifactId>
+    <version>8.0.0</version>
+</dependency>
   	<dependency>
   		<groupId>org.freemarker</groupId>
   		<artifactId>freemarker</artifactId>

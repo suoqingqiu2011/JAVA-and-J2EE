@@ -43,7 +43,7 @@ public class App {
 		return range;
 	}
 
-	private String file;
+	private static String file;
 
 	public String getFile() {
 		return file;
@@ -62,7 +62,10 @@ public class App {
 	private Receiver fileReceiver;
 	private Receiver directoryReceiver;
 
-	public App(String file) {
+	private App(String file) {
+		
+		
+		
 		this.file = file;
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder;
@@ -100,6 +103,24 @@ public class App {
 			e.printStackTrace();
 		}
 	}
+	
+	private static volatile App instance = null;
+	public final static App getInstance() {
+        //Le "Double-Checked Singleton"/"Singleton doublement vérifié" permet 
+        //d'éviter un appel coûteux à synchronized, 
+        //une fois que l'instanciation est faite.
+        if (instance == null) {
+           // Le mot-clé synchronized sur ce bloc empêche toute instanciation
+           // multiple même par différents "threads".
+           // Il est TRES important.
+           synchronized(App.class) {
+             if (instance == null) {
+               instance = new App(file);
+             }
+           }
+        }
+        return instance;
+    }
 
 	public void printJansiMenuDemo() {
 		Reader in = new InputStreamReader(this.getClass().getResourceAsStream("menu.txt"));
@@ -147,8 +168,8 @@ public class App {
 	}
 
 	public static void main(String[] args) throws IOException {
-		if (args != null) {
-			App app = new App("");
+		if (args.length != 0) {
+			App app = App.getInstance();
 			String arg = Arrays.toString(args);
 			int i = arg.lastIndexOf("-r");
 			if (i != -1) {
@@ -215,6 +236,7 @@ public class App {
 			c = new Edit(fileReceiver);
 			break;
 		case "q":
+			System.exit(0);
 		case "quit":
 			System.exit(0);
 		case "h":

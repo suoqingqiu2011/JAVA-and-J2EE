@@ -11,11 +11,11 @@ import junit.framework.Assert;
 
 public class AppTest {
 	App app;
-	@Before
-	public void setUp() {
-		App app = new App(null);
-		this.app = app;
-	}
+	//@Before
+	//public void setUp() {
+		//App app = new App("");
+		//this.app = app;
+	//}
 	@Test
 	public void testPrintJansiMenuDemo() throws IOException {
 		app.printJansiMenuDemo();

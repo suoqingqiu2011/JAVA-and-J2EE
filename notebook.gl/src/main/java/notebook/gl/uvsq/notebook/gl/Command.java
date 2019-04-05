@@ -24,7 +24,7 @@ public abstract class Command {
 		Asciidoctor asciidoctor = Factory.create();
 		 List<String> files = new ArrayList<String>();
 		 DirectoryWalker directoryWalker = new AsciiDocDirectoryWalker(dr.getPath()); 
-		 Map<String,ArrayList<String>> filesMap=new HashMap(); 
+		 Map<String,ArrayList<String>> filesMap=new HashMap<String,ArrayList<String>>(); 
 		 for (File file : directoryWalker.scan()) {
 			 if(file.getName().equals("index.adoc")) continue;
 			 String value = "";
