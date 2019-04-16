@@ -64,14 +64,19 @@ public class App {
 
 	private App(String file) {
 		
-		
-		
 		this.file = file;
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder;
 		try {
 			builder = factory.newDocumentBuilder();
-			File xmlFile = new File("config.xml");
+			File xmlFile = null;
+			if (OSValidator.isUnix() == "unix")
+			{
+				xmlFile = new File("config.xml");
+			}else if (OSValidator.isWindows() == "win")
+			{
+				xmlFile = new File("configW.xml");
+			}
 			Document doc = builder.parse(xmlFile);
 			String directory = doc.getElementsByTagName("directory").item(0).getFirstChild().getNodeValue();
 			String browser = doc.getElementsByTagName("browser").item(0).getFirstChild().getNodeValue();

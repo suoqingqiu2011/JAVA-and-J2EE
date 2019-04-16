@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.HashMap;
+import java.util.Scanner;
 
 import org.asciidoctor.Asciidoctor;
 import org.asciidoctor.Asciidoctor.Factory;
@@ -61,31 +62,56 @@ public class FileReceiver extends Receiver {
 		StringBuffer sb = new StringBuffer();
 		sb.append("= "+fileName+"\n");
 		fileName=fileName.replaceAll(" ", "_");
-		File file = new File(path+"/"+fileName+suffix);
+		File file = new File(path+File.separator+fileName+suffix);
 		if(file.exists()) {
 			System.err.println("File exists");
 			return;
 		}
-		String[] command= {"whoami","date +\"%d/%m/%Y\""};
-		Process pr;
-		try {
-			for(String comm : command) {
-				pr = Runtime.getRuntime().exec(comm);
-	           InputStream is = pr.getInputStream();
-		   		InputStreamReader isr = new InputStreamReader(is, "gbk"); 
-		   		BufferedReader br = new BufferedReader(isr);
-		   		String line;
-		   		while ((line = br.readLine()) != null){
-		   			line = line.replaceAll("\"","");
-		   			sb.append(line+"\n");
+		
+		if (OSValidator.isUnix() == "unix")
+		{
+			String[] command= {"whoami","date +\"%d/%m/%Y\""};
+			Process pr;
+			try {
+				for(String comm : command) {
+					pr = Runtime.getRuntime().exec(comm);
+		           InputStream is = pr.getInputStream();
+			   		InputStreamReader isr = new InputStreamReader(is, "gbk"); 
+			   		BufferedReader br = new BufferedReader(isr);
+			   		String line;
+			   		while ((line = br.readLine()) != null){
+			   			line = line.replaceAll("\"","");
+			   			sb.append(line+"\n");
+			   		}
+			   		is.close();
+			   		isr.close();
+			   		br.close();
 		   		}
-		   		is.close();
-		   		isr.close();
-		   		br.close();
-	   		}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}	
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}else if(OSValidator.isWindows() == "win")
+		{
+			String[] command1= {"C:"+File.separator+"Windows"+File.separator+"System32"+File.separator+"cmd.exe","/c","echo %username%"};
+			String[] command2= {"C:"+File.separator+"Windows"+File.separator+"System32"+File.separator+"cmd.exe","/c","echo %date%"};
+			String [][] commands = {command1,command2};
+			Process p;
+			try {
+				for(String [] comm : commands) {
+					p = Runtime.getRuntime().exec(comm);
+			        Scanner sc = new Scanner(p.getInputStream());
+			        while(sc.hasNext())
+			        	sb.append(sc.nextLine()+"\n");
+			        sc.close();
+				}
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			 
+		}
+			
 		
 		sb.append(":context: \n:project: \n\n");
 		try {
@@ -95,21 +121,39 @@ public class FileReceiver extends Receiver {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		String vimFile = editor+" "+path+"/"+fileName+suffix;
-		String[] command2 = {"/usr/bin/gnome-terminal", "--wait","-e", vimFile};
-		Process pr2;
-		try {
+		if (OSValidator.isUnix() == "unix")
+		{
+			String vimFile = editor+" "+path+File.separator+fileName+suffix;
+			String[] command2 = {"/usr/bin/gnome-terminal", "--wait","-e", vimFile};
+			Process pr2;
+			try {
 
-				pr2 = Runtime.getRuntime().exec(command2);
-				pr2.waitFor();
-	   		
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
+					pr2 = Runtime.getRuntime().exec(command2);
+					pr2.waitFor();
+		   		
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
+		}else if (OSValidator.isWindows() == "win")
+		{
+			String[] commande = {editor,path+File.separator+fileName+suffix};
+			Process p;
+			try {
+				p = Runtime.getRuntime().exec(commande);
+				p.waitFor();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		
 		AnsiConsole.out.println(Ansi.ansi().fg(Color.YELLOW).a(fileName+" has been added into "+path).reset());
 		AnsiConsole.systemUninstall();
 	}
@@ -117,11 +161,11 @@ public class FileReceiver extends Receiver {
 	public void edit(String fileName) {
 		
 		fileName=fileName.replaceAll(" ", "_");
-		if(!new File(path+"/"+fileName+suffix).exists()) {
+		if(!new File(path+File.separator+fileName+suffix).exists()) {
 			System.err.println("You should add file first. Try add + filename or see help");
 			return;
 		}
-		String vimFile = editor+" "+path+"/"+fileName+suffix;
+		String vimFile = editor+" "+path+File.separator+fileName+suffix;
 		String[] command = {"/usr/bin/gnome-terminal","--wait", "-e", vimFile};		
 		try {
 			Process pr;
@@ -140,14 +184,14 @@ public class FileReceiver extends Receiver {
 	public void view(String fileName) {
 		fileName=fileName.replaceAll(" ", "_");
 		try {
-			String html = asciidoctor.convertFile(new File(path+"/"+fileName+suffix), new HashMap<String,Object>());
+			String html = asciidoctor.convertFile(new File(path+File.separator+fileName+suffix), new HashMap<String,Object>());
 		}catch(Exception e) {
 			e.printStackTrace();
 			System.err.println("No such file");
 			return;
 		}
 		
-		cmd = browser+" "+path+"/"+fileName+".html";
+		cmd = browser+" "+path+File.separator+fileName+".html";
 		try {
 			Runtime runtime = Runtime.getRuntime();
 			process = runtime.exec(cmd);

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<directory>doc</directory>
+	<browser>C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe</browser>
+	<editor>C:\\Program Files (x86)\\Notepad++\\notepad++.exe</editor>
+	<suffix>.adoc</suffix>
+	<order>month</order>
+	<freemarker>
+		<freemarkerDirectory>ftl</freemarkerDirectory>
+		<freemarkerTemplateFile>template.ftl</freemarkerTemplateFile>
+		<freemarkerTemplateOutHtml>list.html</freemarkerTemplateOutHtml>
+	</freemarker>
+</configuration>
