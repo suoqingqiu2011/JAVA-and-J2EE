@@ -183,6 +183,9 @@ public class FileReceiver extends Receiver {
 
 	public void view(String fileName) {
 		fileName=fileName.replaceAll(" ", "_");
+
+		if (OSValidator.isUnix() == "unix")
+		{
 		try {
 			String html = asciidoctor.convertFile(new File(path+File.separator+fileName+suffix), new HashMap<String,Object>());
 		}catch(Exception e) {
@@ -199,6 +202,27 @@ public class FileReceiver extends Receiver {
 		}catch (IOException | InterruptedException e){
 			e.printStackTrace();
 		}	
+		
+		} else if (OSValidator.isWindows() == "win")
+		{
+			try {
+				String html = asciidoctor.convertFile(new File(path+File.separator+fileName+suffix), new HashMap<String,Object>());
+			}catch(Exception e) {
+				e.printStackTrace();
+				System.err.println("No such file");
+				return;
+			}
+			
+			cmd = browser+" "+path+File.separator+fileName+".html";
+			try {
+				Runtime runtime = Runtime.getRuntime();
+				process = runtime.exec(cmd);
+				process.waitFor();
+			}catch (IOException | InterruptedException e){
+				e.printStackTrace();
+			}	
+		}
+		
 	}
 
 }
