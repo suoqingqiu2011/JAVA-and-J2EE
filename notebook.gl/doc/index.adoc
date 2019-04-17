@@ -5,5 +5,5 @@ It's a file generated automaticly, please don't change its content. <author@emai
 * [cool kid, ma deuxieme note, ma premiere note, maven config tutorial, mode dutilisation, not cool kid, something wrong, test]
 
 * April
-* [TestWindows, s w]
+* [TestWindows, fr, s w]
 
