@@ -3,6 +3,7 @@ package notebook.gl.uvsq.notebook.gl;
 import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -19,13 +20,30 @@ import org.fusesource.jansi.AnsiConsole;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import freemarker.template.TemplateException;
+import notebook.gl.uvsq.notebook.gl.App.Range;
+
+/**
+ * Cette classe {@code App} est principale et réaliser toutes les opérations désirées.
+ *
+ * @author Administrator
+ * @since JDK1.8
+ */
+
 public class App {
+	/**
+	 * Donner les numéros pour {@code PROJECT} ,{@code CONTEXT} ,{@code TITLE} ,{@code UNSET} ,{@code MONTH} ,
+	 */	
 	public enum Range {
 		PROJECT, CONTEXT, TITLE, UNSET, MONTH
 	};
 
 	public Range range;
-
+	
+	/**
+	 * mettre le range
+	 * @param range range
+	 */
 	public void setRange(String range) {
 		switch (range) {
 		case "context":
@@ -38,23 +56,39 @@ public class App {
 			this.range = Range.TITLE;
 		}
 	}
-
+	
+	/**
+	 * obtenir le range
+	 * @return range
+	 */
 	public Range getRange() {
 		return range;
 	}
 
 	private static String file;
-
+	
+	/**
+	 * obtenir le nom du fichier
+	 * @return file
+	 */
 	public String getFile() {
 		return file;
 	}
-
+	
+	/**
+	 * Mettre le nom du fichier
+	 * @param file nom de fichier
+	 */
 	public void setFile(String file) {
 		this.file = file;
 	}
 
 	private Range indexRange;
 
+	/**
+	 * obtenir l'index de range
+	 * @return indexRange
+	 */
 	public Range getIndexRange() {
 		return indexRange;
 	}
@@ -62,6 +96,16 @@ public class App {
 	private Receiver fileReceiver;
 	private Receiver directoryReceiver;
 
+	/**
+	 * C'est le constructeur permet récupérer les configurations à partir de 'config.xml' ou 'configW.xml' selon 
+	 * des différents systèmes. les configurations sont présentés comme le path de répertiore, celui de 
+	 * navigateur, celui de éditeur etc et en plus des caractéristiques basiques pour le template.
+	 * 
+	 * @param file
+	 * @exception ParserConfigurationException s'affiche si eureur de la configuration.
+	 * @exception SAXException s'affiche si eureur d'analyser les fichiers au format '.xml'.
+	 * @exception IOException s'affiche si toutes les possibilités d'eureur de lire les fichiers.
+	 */
 	private App(String file) {
 		
 		this.file = file;
@@ -110,14 +154,18 @@ public class App {
 	}
 	
 	private static volatile App instance = null;
+	/**
+	 * Le "Double-Checked Singleton"/"Singleton doublement vérifié" permet 
+	 * d'éviter un appel coûteux à synchronized, une fois que l'instanciation est faite.
+	 * 
+	 * Le mot-clé {@code synchronized} sur ce bloc empêche toute instanciation multiple 
+	 * même par différents "threads". Il est très important.
+	 * 
+	 * @return instance
+	 */
 	public final static App getInstance() {
-        //Le "Double-Checked Singleton"/"Singleton doublement vérifié" permet 
-        //d'éviter un appel coûteux à synchronized, 
-        //une fois que l'instanciation est faite.
+        
         if (instance == null) {
-           // Le mot-clé synchronized sur ce bloc empêche toute instanciation
-           // multiple même par différents "threads".
-           // Il est TRES important.
            synchronized(App.class) {
              if (instance == null) {
                instance = new App(file);
@@ -127,7 +175,12 @@ public class App {
         return instance;
     }
 
-	public void printJansiMenuDemo() {
+	/**
+	 * Cette fonction {@code printJansiMenuDemo()} est juste pour enrichir les références de command quand on
+	 * va taper sur le console. Ces références sont définis dans le fichier 'menu.txt'.  
+	 * @throws IOException s'affiche si eureur de lire les fichiers.
+	 */
+	public void printJansiMenuDemo() throws IOException{
 		Reader in = new InputStreamReader(this.getClass().getResourceAsStream("menu.txt"));
 		try {
 			char[] buf = new char[1024];
@@ -147,8 +200,14 @@ public class App {
 		}
 
 	}
-
+	
+	/**
+	 * Cette fonction {@code printJansiLogoDemo()} est juste pour montrer un dessin de logo quand on
+	 * va taper sur le console. Ce logo est dans le fichier 'logo.txt'.  
+	 * @exception IOException s'affiche si eureur de lire les fichiers.
+	 */
 	public void printJansiLogoDemo() throws IOException {
+		
 		Reader in = new InputStreamReader(getClass().getResourceAsStream("logo.txt"));
 		try {
 			char[] buf = new char[1024];
@@ -164,7 +223,12 @@ public class App {
 		}
 	}
 
-	public void closeQuietly(Closeable c) {
+	/**
+	 * Cette fonction {@code closeQuietly(Closeable)} va montrer des erreurs los de la fermeture de 'Stream'. 
+	 * @param c close
+	 * @throws IOException s'affiche si eureur de 'threads'.
+	 */
+	public void closeQuietly(Closeable c) throws IOException{
 		try {
 			c.close();
 		} catch (IOException ioe) {
@@ -172,7 +236,15 @@ public class App {
 		}
 	}
 
-	public static void main(String[] args) throws IOException {
+	/**
+	 * Cette fonction principale statique {@code main(String[])} va réaliser toutes les fonctionalités dans notre projets.
+	 * Et elle peut reconnaître des formats de commands définis par nos propres moyens dans le console. 
+	 * @param args String[] arges
+	 * @exception IOException s'affiche si eureur de 'threads'.
+	 * @throws InterruptedException s'affiche si eureur
+	 * @throws TemplateException s'affiche si eureur
+	 */
+	public static void main(String[] args) throws IOException, InterruptedException, TemplateException {
 		if (args.length != 0) {
 			App app = App.getInstance();
 			String arg = Arrays.toString(args);
@@ -213,7 +285,23 @@ public class App {
 		}
 	}
 
-	private void handleInput(String comm) {
+	/**
+	 * Cette fonction {@code handleInput(String)} va reconnaître le premiere mot de command (le type du traitement) et 
+	 * ensuite va rappeler toutes les fonctionalités. Mais tout à bord, elle va lancer une application externe 
+	 * pour continuer toutes les opérations .
+	 * @throws InterruptedException s'affiche si eureur
+	 * @throws IOException s'affiche si eureur
+	 * @throws TemplateException s'affiche si eureur
+	 * 
+	 * @see Add
+	 * @see Delete
+	 * @see Search
+	 * @see ListFile
+	 * @see View
+	 * @see Edit
+	 * @see Command#update(DirectoryReceiver, Range)
+	 */
+	private void handleInput(String comm) throws IOException, InterruptedException, TemplateException {
 		Command c = null;
 		switch (comm) {
 		case "a":

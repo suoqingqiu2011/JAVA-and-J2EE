@@ -3,6 +3,7 @@ package notebook.gl.uvsq.notebook.gl;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.IOException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -10,6 +11,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
+
+import freemarker.template.TemplateException;
 
 public class DirectoryReceiverTest {
 
@@ -34,7 +37,7 @@ public class DirectoryReceiverTest {
 	}
 	
 	@Test
-	public void testFreemarker() {
+	public void testFreemarker() throws IOException, TemplateException {
 		this.directoryReceiver.list("");
 	}
 

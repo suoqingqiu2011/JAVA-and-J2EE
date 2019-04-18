@@ -14,13 +14,43 @@ import java.util.Map;
 import org.asciidoctor.AsciiDocDirectoryWalker;
 import org.asciidoctor.Asciidoctor;
 import org.asciidoctor.Asciidoctor.Factory;
+
+import notebook.gl.uvsq.notebook.gl.App.Range;
+
 import org.asciidoctor.DirectoryWalker;
 
+import freemarker.template.TemplateException;
+
+/**
+ * Cette classe abstraire {@code Command} est définie par le fondement des différents fonctionalités.
+ *
+ * @author Administrator
+ * @since JDK1.8
+ */
 public abstract class Command {
+	/**
+	 * Cette fonction abstraire {@code execute(String)} permet de réaliser des différents 
+	 * fonctionalités comme {@code del(String)} ,{@code add(String)},{@code edit(String)} etc.
+	 * 
+	 * @param fileName nom du fichier
+	 * @throws InterruptedException s'affiche si eureur
+	 * @throws IOException s'affiche si eureur
+	 * @throws TemplateException s'affiche si eureur
+	 */	
+	public abstract void execute(String fileName) throws IOException, InterruptedException, TemplateException;
 
-	public abstract void execute(String fileName);
-
-	public void update(DirectoryReceiver dr, App.Range order) {
+	/**
+	 * Cette fonction {@code update(DirectoryReceiver, App.Range)},elle réalise la fonctionalité 
+	 * de recherche principalement. On parcours tous les types 'asciidoctor' de fichiers 
+	 * et va trouver le fichier 'index.adoc' pour mettre à jour des caractéristiques 
+	 * comme la date ,le titre et des attributs. Sinon on crée un nouveau fichier 'index.adoc' et
+	 * associe un ensemble de note dedans.
+	 * 
+	 * @param dr directoryReceiver
+	 * @param order range
+	 * @throws IOException s'affiche si eureur de rédiger les fichiers 'index.adoc'.
+	 */
+	public void update(DirectoryReceiver dr, App.Range order) throws IOException{
 		Asciidoctor asciidoctor = Factory.create();
 		 List<String> files = new ArrayList<String>();
 		 DirectoryWalker directoryWalker = new AsciiDocDirectoryWalker(dr.getPath()); 

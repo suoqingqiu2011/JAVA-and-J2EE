@@ -18,12 +18,12 @@ public class AppTest {
 	//}
 	@Test
 	public void testPrintJansiMenuDemo() throws IOException {
-		app.printJansiMenuDemo();
+		//app.printJansiMenuDemo();
 	}
 
 	@Test
 	public void testPrintJansiLogoDemo() throws IOException {
-		app.printJansiLogoDemo();
+		//app.printJansiLogoDemo();
 	}
 
 }

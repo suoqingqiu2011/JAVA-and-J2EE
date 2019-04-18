@@ -44,25 +44,46 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
+/**
+ * Hériter la classe abstraire {@code Receiver} et procéder toutes les opérations que les répertoires peuvent avoir .
+ *
+ * @author Administrator
+ * @since JDK1.8
+ */
 public class DirectoryReceiver extends Receiver {
 
 	private String path;
 	private String ftlDir;
 	private String ftl;
 	private String ftlHtml;
-	
+	/**
+	 * obtenir le chemin (path)
+	 * @return path
+	 */
 	public String getPath() {
 		return path;
 	}
-
+	/**
+	 * 
+	 * @param path chemin
+	 */
 	public void setPath(String path) {
 		this.path = path;
 	}
-
+	/**
+	 * 
+	 * @param path chemin
+	 */
 	public DirectoryReceiver(String path) {
 		this.path = path;
 	}
-	
+	/**
+	 * C'est le constructeur.
+	 * @param directory chemin de répertoire
+	 * @param ftlDir répertoire
+	 * @param ftl file template
+	 * @param fHtml file html
+	 */
 	public DirectoryReceiver(String directory, String ftlDir, String ftl, String fHtml) {
 		this(directory);
 		this.ftlDir = ftlDir;
@@ -70,8 +91,12 @@ public class DirectoryReceiver extends Receiver {
 		this.ftlHtml = fHtml;
 	}
 
-	//unused
-	public void list() {
+	/**
+	 * Cette fonction {@code list()} permet de lister tous les fichiers sur un bon chemin (path) .
+	 * 
+	 * @throws IOException s'affiche si eureur de parcourir le chemin (path).
+	 */	
+	public void list() throws IOException{
 		System.out.println(path);
 		cmd = "/usr/bin/ls "+path;
 		System.out.println(cmd);
@@ -92,8 +117,15 @@ public class DirectoryReceiver extends Receiver {
 			e.printStackTrace();
 		}
 	}
-	
-	public void list(String fileName) {
+	/**
+	 * Cette fonction {@code list(String)} permet de générer le document asciidoctor présentant 
+	 * la liste en fusionnant les données JSON et le template .
+	 * 
+	 * @param fileName nom du fichier
+	 * @throws IOException s'affiche si eureur de lire des fichiers.
+	 * @throws TemplateException s'affichera si eureur de l'utilisation du Temple.
+	 */
+	public void list(String fileName) throws IOException,TemplateException{
 	
 		Asciidoctor asciidoctor = Factory.create();
 		DirectoryWalker directoryWalker = new AsciiDocDirectoryWalker(getPath()); 
@@ -136,8 +168,16 @@ public class DirectoryReceiver extends Receiver {
 		*/
 		
 	}
-
-	public void search(String word) {	
+	
+	/**
+	 * Cette fonction {@code search(String)} permet de chercher par mot clés 
+	 * dans l’ensemble de la note
+	 * 
+	 * @param word mot de clé
+	 * @throws IOException s'affiche si eureur de l'application de {@code Analyzer}, {@code Asciidoctor} ou {@code DirectoryWalker}.
+	 * @throws TemplateException s'affichera si eureur de l'utilisation du Temple.
+	 */
+	public void search(String word) throws IOException, TemplateException {	
 	    try {
 	    	Analyzer analyzer = new StandardAnalyzer();
 		    Path indexPath = Files.createTempDirectory("tempIndex");
@@ -183,7 +223,16 @@ public class DirectoryReceiver extends Receiver {
 	    		
 	}
 	
-	public void search(String word,String attri) {	
+	/**
+	 * Cette fonction {@code search(String)} permet de chercher par mot clésdans un élément
+	 * particulier comme le titre ou un attribut .
+	 * 
+	 * @param word mot de clé
+	 * @param attri attributs
+	 * @throws IOException s'affiche si eureur de lire des fichiers.
+	 * @throws TemplateException s'affichera si eureur de l'utilisation du Temple.
+	 */
+	public void search(String word,String attri) throws IOException,TemplateException{	
 	    try {
 	    	Analyzer analyzer = new StandardAnalyzer();
 		    Path indexPath = Files.createTempDirectory("tempIndex");

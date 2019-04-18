@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-	<directory>doc</directory>
-	<browser>C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe</browser>
-	<editor>C:\\Program Files (x86)\\Notepad++\\notepad++.exe</editor>
+	<directory>D:\\eclipse-workspace\\notebook.gl\\doc</directory>
+	<browser>D:\\AppData\\Local\\360Chrome\\Chrome\\Application\\360chrome.exe</browser>
+	<editor>D:\\Notepad++\\notepad++.exe</editor>
 	<suffix>.adoc</suffix>
 	<order>month</order>
 	<freemarker>
