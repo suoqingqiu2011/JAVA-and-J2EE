@@ -1,8 +1,0 @@
-= mode dutilisation
-pavle
-24/03/2019
-:context: bug
-:project: prog
-
-* ' is not allowed to use in the project
-

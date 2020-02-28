@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename resource &apos;PGLP/NewFile.xml&apos; to &apos;persistance.xml&apos;" description="Rename resource &apos;NewFile.xml&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="NewFile.xml" name="persistance.xml" stamp="1553266438056" updateReferences="true"/>
-</session>

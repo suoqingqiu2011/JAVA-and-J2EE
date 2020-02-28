@@ -1,6 +1,0 @@
-= something wrong
-pavle
-24/03/2019
-:context: bug 
-:project: prog
-

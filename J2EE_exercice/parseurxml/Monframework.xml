@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Monframework>
+
+<action>
+<provenance>/debut.perform</provenance>
+<servlet-action>pack1.DebutAction</servlet-action>
+</action>
+
+<action>
+<provenance>/login.perform</provenance>
+<servlet-action>pack1.LoginAction</servlet-action>
+</action>
+
+<action>
+<provenance>/saisie.perform</provenance>
+<servlet-action>pack1.SaisieAction</servlet-action>
+</action>
+
+
+</Monframework>

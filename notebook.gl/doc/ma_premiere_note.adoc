@@ -1,8 +1,0 @@
-= ma premiere note
-pavle
-24/03/2019
-:context: note 
-:project: gl
-
-* dao prog
-

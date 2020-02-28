@@ -1,9 +1,0 @@
-= Index.adoc
-It's a file generated automaticly, please don't change its content. <author@email.fr>
-
-* March
-* [cool kid, ma deuxieme note, ma premiere note, maven config tutorial, mode dutilisation, not cool kid, something wrong, test]
-
-* April
-* [TestWindows, fr, s w]
-

@@ -1,9 +1,0 @@
-package notebook.gl.uvsq.notebook.gl;
-
-public enum Range {
-	context,project;
-	
-	public Range getRange(String range) {
-		
-	}
-}

@@ -1,8 +1,0 @@
-= cool kid
-pavle
-24/03/2019
-:context: dairy
-:project: dairy
-
-* I see a cool kid today. He is very cool.
-

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+coucou
+<form name="form1" action="./debut" method="post" onsubmit="return myFunction() ;">
+	nom:<input type="text" id="nom" class="noNull" name="nom" size="1.5" placeholder="enter your name" required="remplir votre nom"/>
+	age:<input type="text" id="age" class="noNull" name="age" size="1.5" placeholder="enter your age" />
+	ville:<input type="text" id="ville" class="noNull" name="ville" size="1.5" placeholder="enter your ville"/>
+	<input type="submit" name="OK" value="Valider" ></input>
+</form>
+<p id="demo"></p>
+
+<script>
+function myFunction() {
+	 document.getElementById("demo").innerHTML = "";
+	 
+	 var x =document.forms["form1"];
+	 var i;
+	 for(i=0;i<x.length;i++){
+		
+		  if(x.elements[i].value==""){
+			  document.getElementById("demo").innerHTML = "il faut remplir "+x.elements[i].name;
+			  return false;
+		  }
+	 }
+  
+}
+</script>
+</script>
+</body>
+</html>
