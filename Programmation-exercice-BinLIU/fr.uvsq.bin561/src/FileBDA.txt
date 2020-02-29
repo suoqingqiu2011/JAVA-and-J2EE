@@ -1,0 +1,2 @@
+dell-PC.uvsq.fr:192.168.1.47
+bin.info_uvsq.fr:192.168.1.82

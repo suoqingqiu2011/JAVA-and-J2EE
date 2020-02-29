@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Face to Face</string>
+    <string name="FtF">FtF</string>
+    <string name="action_settings">Close</string>
+	<string name="LOGIN">LOGIN</string>
+	<string name="nom">Username :</string>
+	<string name="motdepass">Password :</string>
+	<string name="FRIEND">Friend</string>
+	<string name="SEND">Send</string>
+	<string name="WELCOME">welcome</string>
+	<string name="user">User</string>
+	<string name="typing">Typing</string>
+	<string name="friend_choice">Single choice for your friend</string>
+	<string name="friend_ok">OK</string>
+	<string name="friend_cancel">Cancel</string>
+	<string name="RETURN">Return</string>
+	
+</resources>

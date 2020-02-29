@@ -1,0 +1,20 @@
+package notebook.gl.uvsq.notebook.gl;
+
+public class Add extends Command {
+	
+	private Receiver fileReceiver;
+	private Receiver directoryReceiver;
+
+	public Add(Receiver fileReceiver, Receiver directoryReceiver, Receiver windowReceiver) {
+		this.fileReceiver = fileReceiver;
+		this.directoryReceiver = directoryReceiver;
+	}
+
+
+
+	@Override
+	public void execute(String fileName) {
+		((FileReceiver)fileReceiver).add(fileName);
+	}
+
+}

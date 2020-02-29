@@ -1,0 +1,13 @@
+package notebook.gl.uvsq.notebook.gl;
+
+public enum Range {
+	context,project;
+	
+	public Range getRange(String range) {
+		switch(range) {
+		case "context": return context;
+		case "project": return project;
+		}
+		return null;
+	}
+}

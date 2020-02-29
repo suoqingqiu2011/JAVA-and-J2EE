@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"  
+    android:id="@+id/chat_root"  
+    android:layout_width="match_parent"  
+    android:layout_height="match_parent"  
+    android:background="#ffffff"  
+    android:focusable="false"  
+    android:focusableInTouchMode="false"  
+    android:gravity="center_horizontal"  
+    android:orientation="vertical" >  
+
+	<LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="20dip"
+	    android:layout_weight="0.07"
+	    android:background="@drawable/chatting_header"
+	    android:gravity="center_vertical"
+	    android:orientation="horizontal" >
+
+	    <TextView
+	        android:id="@+id/chatting_contact_name"
+	        android:layout_width="310dp"
+	        android:layout_height="wrap_content"
+	        android:background="@null"
+	        android:ellipsize="end"
+	        android:gravity="left|center"
+	        android:hint="User"
+	        android:paddingLeft="10dip"
+	        android:textColor="@color/dark"
+	        android:textSize="18sp" />
+
+	    <Button
+	        android:id="@+id/Button_map"
+	        android:layout_width="40dp"
+	        android:layout_height="40dp"
+	        android:paddingRight="15dp"
+	        android:background="@drawable/button_map" />
+		
+	    <TextView
+	        android:id="@+id/chatting_myname"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentBottom="true"
+	        android:layout_alignParentRight="true"
+	        android:layout_toRightOf="@id/chatting_contact_name"
+	        android:layout_weight="0.28"
+	        android:background="@null"
+	        android:hint="myname"
+	        android:padding="3dip"
+	        android:textColor="@color/red"
+	        android:textSize="16sp" 
+	        android:visibility="gone"/>
+
+	</LinearLayout>
+
+    <ListView
+        android:id="@+id/chatting_history_lv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.77"
+        android:paddingTop="15.0dip" 
+        android:background="@null"
+        android:cacheColorHint="#003366"
+        android:divider="@null"
+        android:listSelector="#00ffff"
+        android:scrollbars="vertical"
+        android:transcriptMode="alwaysScroll" >
+  
+    </ListView>  
+     
+    
+    <LinearLayout  
+        android:layout_width="match_parent"  
+        android:layout_height="wrap_content"  
+        android:background="#cccccc"  
+        android:orientation="horizontal"  
+        android:paddingRight="7dp" >  
+  
+        <Button
+            android:id="@+id/friend_button"
+            android:layout_width="82dp"
+            android:layout_height="22dp"
+            android:layout_gravity="center"
+            android:background="@drawable/button_tofriend"
+            android:gravity="center"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="@string/FRIEND"
+            android:textColor="@color/red" />
+  
+        <EditText  
+            android:id="@+id/text_editor"  
+            android:layout_width="fill_parent"  
+            android:layout_height="wrap_content"  
+            android:layout_gravity="center_vertical"  
+            android:layout_marginBottom="5.0dip"  
+            android:layout_marginLeft="7.0dip"  
+            android:layout_marginRight="7dp"  
+            android:layout_marginTop="5.0dip"  
+            android:layout_weight="1.0"  
+            android:autoText="true"  
+            android:background="#ffffff"  
+            android:capitalize="sentences"  
+            android:focusable="true"  
+            android:hint="Typing Message"  
+            android:imeOptions="actionSend|flagNoEnterAction"  
+            android:inputType="textCapSentences|textAutoCorrect|textMultiLine|textShortMessage"  
+            android:maxLength="2000"  
+            android:maxLines="8"  
+            android:minHeight="34.0dip"  
+            android:nextFocusRight="@+id/send_button"  
+            android:textColorHint="@color/light_blue" />  
+  
+        <Button
+            android:id="@+id/send_button"
+            android:layout_width="88dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/send_button"
+            android:gravity="center"
+            android:nextFocusLeft="@id/text_editor"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="@string/SEND"
+            android:textColor="@color/dark" />
+  
+     </LinearLayout>  
+</LinearLayout>  

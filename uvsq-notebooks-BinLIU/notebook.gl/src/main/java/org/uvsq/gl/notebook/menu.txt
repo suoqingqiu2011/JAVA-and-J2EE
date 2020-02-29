@@ -1,0 +1,19 @@
+                                 H.E.L.P
+
+[add + fileName; a] add a file
+[edit + fileName; e] edit/add a file
+[list; l] list files
+[listManager +-m + w:write /r:read; lm] list index manager
+[delete + fileName; d] remove a file
+[search + wordName; s] search globaly a word
+[search + wordName + -r title/project/context; s] search a word
+[view + fileName; v] view a file
+[view index] view index file
+[view ../list] view freemaker template list
+[help;h] help
+[quit;q] quit
+
+[configuration] config.xml(unix) or configW.xml(win)
+
+[*] Notes should not have suffix for being able to be transformed.
+

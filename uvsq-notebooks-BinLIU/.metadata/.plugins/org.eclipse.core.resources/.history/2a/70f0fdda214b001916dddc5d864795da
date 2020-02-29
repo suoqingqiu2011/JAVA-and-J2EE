@@ -1,0 +1,21 @@
+package notebook.gl.uvsq.notebook.gl;
+
+public class Edit extends Command {
+
+	private Receiver fileReceiver;
+	
+	public Edit(Receiver fileReceiver) {
+		this.fileReceiver = fileReceiver;
+	}
+
+	@Override
+	public void execute() {
+		((FileReceiver)fileReceiver).edit(null);
+	}
+
+	@Override
+	public void execute(String fileName) {
+		((FileReceiver)fileReceiver).edit(fileName);
+	}
+
+}

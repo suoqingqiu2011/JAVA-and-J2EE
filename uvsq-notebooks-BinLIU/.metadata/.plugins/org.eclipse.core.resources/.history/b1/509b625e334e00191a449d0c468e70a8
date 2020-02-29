@@ -1,0 +1,12 @@
+package notebook.gl.uvsq.notebook.gl;
+
+public class Misc {
+
+	public static void main(String[] args) {
+		String s = "q q";
+		s = s.replaceAll(" ","\\ ");
+		System.out.println(s);
+
+	}
+
+}

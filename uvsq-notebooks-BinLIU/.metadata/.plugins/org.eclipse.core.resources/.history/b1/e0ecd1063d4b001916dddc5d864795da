@@ -1,0 +1,24 @@
+package notebook.gl.uvsq.notebook.gl;
+
+import java.util.List;
+
+public class Search extends Command {
+
+	private DirectoryReceiver directoryReceiver;
+	public Search(DirectoryReceiver directoryReceiver) {
+		this.directoryReceiver = directoryReceiver;
+	}
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void execute(String fileName) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

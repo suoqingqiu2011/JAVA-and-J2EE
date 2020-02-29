@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+	    android:layout_height="wrap_content" 
+	    android:layout_width="wrap_content" 
+	    android:background="#ffffffff" 
+	    android:orientation="horizontal"
+	 	android:id="@+id/dialog">
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentTop="true"
+		android:orientation="vertical">
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="#ffffffff">	 	
+		
+			<TextView android:layout_height="wrap_content"
+				android:layout_width="wrap_content"
+				android:id="@+id/tvname" 
+				android:text="@string/nom" 
+				android:textStyle="bold"/>
+		
+			<EditText
+				android:id="@+id/etName"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:minWidth="100dp" />
+			
+			<requestFocus/>
+			
+		</LinearLayout>
+	
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="#ffffffff"> 
+			
+		  	<TextView android:layout_height="wrap_content"
+				android:layout_width="wrap_content"
+				android:id="@+id/tvpassword" 
+				android:text="@string/motdepass" 
+				android:textStyle="bold"/>
+			<EditText
+			    android:id="@+id/etPassword"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:minWidth="100dp" />
+			
+		</LinearLayout>
+		
+	<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="#ffffffff"> 
+			
+		<TextView  android:id="@+id/tvresult"  
+		    android:layout_width="match_parent"         
+		    android:layout_height="wrap_content"         
+		    android:hint="Wait for your input ..."/>
+		
+	</LinearLayout>
+		
+	</LinearLayout>
+</RelativeLayout>

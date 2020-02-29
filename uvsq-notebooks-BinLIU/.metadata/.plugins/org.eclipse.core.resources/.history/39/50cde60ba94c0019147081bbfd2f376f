@@ -1,0 +1,12 @@
+package pglp;
+
+import java.sql.Connection;
+
+public abstract class DAO<T> implements Serializable{
+	protected Connection conn;
+	public abstract T create(T obj);
+	public abstract void delete(T obj);
+	public abstract T update(T obj);
+	public abstract T find(String id);
+
+}

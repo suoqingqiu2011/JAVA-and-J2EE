@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<resources>
+	<string-array name="select_friend">
+	<item>Wu Jianan</item>
+	<item>Liu Bin</item>
+	<item>Li Zhenxing</item>
+	<item>Tom</item>
+	<item>Jack</item>
+	<item>Make</item>
+	<item>Bob</item>
+	<item>Wang </item>
+	<item>Li</item>
+	<item>Zhao</item>
+	<item>Sun</item>
+	</string-array>
+</resources>

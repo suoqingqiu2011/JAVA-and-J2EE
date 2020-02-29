@@ -1,0 +1,6 @@
+mvn -X install:install-file -Dfile=C:\Users\LY_Famille\Desktop\Cours Paris-Saclay\Programmation Génie Logiciel et Preuve\Projet\Projet Java\Version2\notebook.gl\lib\jansi.jar
+ -DgroupId=jansi -DartifactId=jansi -Dversion=1.17
+-Dpackaging=jar 
+
+mvn -X install:install-file  -DgroupId=jansi -DartifactId=jansi
+ -Dversion=1.17 -Dpackaging=jar -Dfile=C:\Users\LY_Famille\.m2\repository\jansi\jansi.jar

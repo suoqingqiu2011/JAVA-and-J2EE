@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_friend_image"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingBottom="0dp"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp"
+    android:paddingTop="0dp"
+    tools:context="com.ubp.l3info.ftfmyap.friend.Mainfriend" >
+
+    <TextView
+        android:id="@+id/chatting_username"
+        android:layout_width="290dp"
+        android:layout_height="80dp"
+        android:layout_centerHorizontal="true"
+        android:background="@null"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:hint="User"
+        android:paddingBottom="0dp"
+        android:textColor="@color/dark"
+        android:textSize="18sp" 
+        android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/friend_list_button"
+        android:layout_width="102dp"
+        android:layout_height="52dp"
+        android:layout_below="@+id/chatting_username"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/friend_button"
+        
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:text="@string/FRIEND"
+        android:textColor="#ff0099cc" />
+    
+    <ImageView
+        android:id="@+id/friend_logo"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_below="@+id/friend_list_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="55.0dip" 
+        android:background="@drawable/launcher"
+        android:gravity="center"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:text="@string/FRIEND"
+        android:textColor="#ff0099cc" />
+    
+    
+</RelativeLayout>

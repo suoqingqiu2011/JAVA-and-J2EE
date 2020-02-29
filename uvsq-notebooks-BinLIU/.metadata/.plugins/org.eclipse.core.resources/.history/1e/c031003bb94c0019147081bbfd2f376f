@@ -1,0 +1,38 @@
+package pglp;
+
+public class JDBCDAOPersonnel extends DAOPersonnel {
+
+	public JDBCDAOPersonnel() {
+		try {
+			Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+			String dburl = "jdbc:derby:personnelDb;create=true";
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public Personnel create(Personnel obj) {
+		
+		return null;
+	}
+
+	@Override
+	public void delete(Personnel obj) {
+	
+	}
+
+	@Override
+	public Personnel update(Personnel obj) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Personnel find(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}
