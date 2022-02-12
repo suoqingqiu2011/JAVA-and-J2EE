@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="GBK"?>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:ab="http://example.com/ns#"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/">
+  <rdf:Description rdf:about="http://example.com/ns#cindy">
+    <foaf:mbox>cindym@gmail.com</foaf:mbox>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.com/ns#richard">
+    <foaf:mbox>richard49@hotmail.com</foaf:mbox>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.com/ns#craig">
+    <foaf:mbox>craigellis@yahoo.com</foaf:mbox>
+  </rdf:Description>
+</rdf:RDF>

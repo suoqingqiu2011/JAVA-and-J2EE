@@ -1,0 +1,12 @@
+# filename: rdf_ex2.ttl
+
+@prefix ab: <http://example.com/ns#> .
+
+ab:richard ab:homeTel "(229) 276-5135" . 
+ab:richard ab:email   "richard49@hotmail.com" . 
+
+ab:cindy ab:homeTel "(245) 646-5488" . 
+ab:cindy ab:email   "cindym@gmail.com" . 
+
+ab:craig ab:homeTel "(194) 966-1505" . 
+ab:craig ab:email   "craigellis@yahoo.com" . 

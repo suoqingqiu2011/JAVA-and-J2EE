@@ -1,0 +1,2 @@
+PREFIX ab: <http://example.com/ns#> 
+SELECT ?craig_mail WHERE{ab:craig ab:email ?craig_mail .}
